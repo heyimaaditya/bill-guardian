@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bill-guardian
+
+  # Database Configuration
+  datasource:
+    # This must match your Docker DB setup from Part 2
+    url: jdbc:postgresql://localhost:5432/billguardian
+    username: cfo_admin
+    password: SecurePassword123!
+    driver-class-name: org.postgresql.Driver
+
+  # JPA / Hibernate settings
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: bg-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  # Redis Configuration
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  # Senior Move: Enable Virtual Threads (Java 21)
+  threads:
+    virtual:
+      enabled: true
+
+  langchain4j:
+    open-ai:
+      chat-model:
+        api-key: ${OPENAI_API_KEY} # Set this in your .env or Windows Env Variables
+        model-name: gpt-4o

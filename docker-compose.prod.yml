@@ -1,0 +1,63 @@
+services:
+  # 1. Database (PostgreSQL)
+  db:
+    image: postgres:16-alpine
+    container_name: bg-postgres-prod
+    environment:
+      POSTGRES_DB: billguardian
+      POSTGRES_USER: cfo_admin
+      POSTGRES_PASSWORD: SecurePassword123!
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+
+  # 2. Caching (Redis)
+  cache:
+    image: redis:7-alpine
+    container_name: bg-redis-prod
+
+  # 3. Message Broker (Kafka)
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: bg-kafka-prod
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # 4. Java Backend (Spring Boot)
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bg-backend-prod
+    depends_on:
+      - db
+      - cache
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/billguardian
+      - SPRING_DATASOURCE_USERNAME=cfo_admin
+      - SPRING_DATASOURCE_PASSWORD=SecurePassword123!
+      - SPRING_DATA_REDIS_HOST=cache
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    ports:
+      - "8080:8080"
+
+  # 5. Frontend (React + Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bg-frontend-prod
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_prod_data:

@@ -1,13 +1,27 @@
-# Ignore sensitive environment variables
+# Secrets
 .env
+.env.local
 
-# Ignore Docker data (we don't want 1GB of DB logs in GitHub)
-postgres_data/
+# Java / Maven
+**/target/
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+*.jar
 
-# MacOS files
-.DS_Store
+# Node / Frontend
+**/node_modules/
+**/dist/
+.eslintcache
 
-# IDE files
+# IDEs
 .idea/
 .vscode/
 *.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker logs
+postgres_data/
