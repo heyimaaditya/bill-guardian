@@ -1,0 +1,13 @@
+# Ignore sensitive environment variables
+.env
+
+# Ignore Docker data (we don't want 1GB of DB logs in GitHub)
+postgres_data/
+
+# MacOS files
+.DS_Store
+
+# IDE files
+.idea/
+.vscode/
+*.iml
