@@ -15,7 +15,6 @@ function App() {
   const [summary, setSummary] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Senior Tip: Use useCallback so the WebSocket hook doesn't trigger on every render
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
@@ -32,7 +31,6 @@ function App() {
     }
   }, []);
 
-  // Pass the memoized loadData to the hook
   useWebSocket(loadData);
 
   useEffect(() => {
@@ -41,7 +39,6 @@ function App() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
-      {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 6 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <ShieldCheck size={48} color="#10b981" />

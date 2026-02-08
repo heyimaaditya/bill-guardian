@@ -19,20 +19,19 @@ public class AmexParser implements BankParserStrategy {
 
         for (int i = 1; i < lines.length; i++) {
             try {
-                // Amex Format: Description, Date, Amount
                 String[] columns = lines[i].split(",");
                 if (columns.length < 3) continue;
 
                 transactions.add(Transaction.builder()
-                        .transactionDate(LocalDate.parse(columns[1].trim())) // Date is Column 1
-                        .amount(new BigDecimal(columns[2].trim()))          // Amount is Column 2
-                        .description(columns[0].trim())                    // Desc is Column 0
+                        .transactionDate(LocalDate.parse(columns[1].trim()))
+                        .amount(new BigDecimal(columns[2].trim()))
+                        .description(columns[0].trim())
                         .merchantName(columns[0].trim())
                         .category(TransactionCategory.UNCATEGORIZED)
                         .originalBankName(getBankName())
                         .rawData(PrivacyUtils.maskSensitiveData(lines[i]))
                         .build());
-            } catch (Exception e) { /* log error */ }
+            } catch (Exception e) {}
         }
         return transactions;
     }
@@ -42,7 +41,6 @@ public class AmexParser implements BankParserStrategy {
 
     @Override
     public boolean supports(String firstLine) {
-        // Amex headers often use the word "Reference" or "Transaction ID"
         return firstLine.contains("Reference") || (firstLine.contains("Description") && firstLine.indexOf("Description") == 0);
     }
 }

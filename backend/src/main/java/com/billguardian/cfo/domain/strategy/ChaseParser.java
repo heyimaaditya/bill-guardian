@@ -2,8 +2,8 @@ package com.billguardian.cfo.domain.strategy;
 
 import com.billguardian.cfo.domain.model.Transaction;
 import com.billguardian.cfo.domain.model.TransactionCategory;
-import com.billguardian.cfo.shared.utils.HashUtils;    // <--- ADD THIS IMPORT
-import com.billguardian.cfo.shared.utils.PrivacyUtils; // <--- ADD THIS IMPORT
+import com.billguardian.cfo.shared.utils.HashUtils;
+import com.billguardian.cfo.shared.utils.PrivacyUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +29,6 @@ public class ChaseParser implements BankParserStrategy {
                 String[] columns = originalLine.split(",");
                 if (columns.length < 3) continue;
 
-                // Create a unique fingerprint based on the raw data
                 String fingerprint = HashUtils.generateFingerprint(originalLine);
                 String maskedData = PrivacyUtils.maskSensitiveData(originalLine);
 
@@ -41,7 +40,7 @@ public class ChaseParser implements BankParserStrategy {
                         .category(TransactionCategory.UNCATEGORIZED)
                         .originalBankName(getBankName())
                         .rawData(maskedData)
-                        .hashIdentifier(fingerprint) // Set the unique ID
+                        .hashIdentifier(fingerprint)
                         .build());
 
             } catch (Exception e) {

@@ -11,7 +11,6 @@ public class HashUtils {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-            // HexFormat is a modern Java 17+ feature to convert bytes to a readable string
             return HexFormat.of().formatHex(hash);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Hashing algorithm SHA-256 not found", e);

@@ -14,10 +14,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable) // Required for stateless REST APIs
+            .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/statements/**").permitAll() // Allow our endpoints
-                .requestMatchers("/ws-cfo/**").permitAll()        // Allow WebSockets
+                .requestMatchers("/api/statements/**").permitAll() 
+                .requestMatchers("/ws-cfo/**").permitAll()       
                 .anyRequest().authenticated()
             );
             

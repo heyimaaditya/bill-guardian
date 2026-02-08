@@ -43,5 +43,5 @@ public class Transaction {
     @Column(unique = true, nullable = false)
     private String hashIdentifier;
 
-    private BigDecimal communityAverage; // What others pay for this same service
+    private BigDecimal communityAverage;
 }

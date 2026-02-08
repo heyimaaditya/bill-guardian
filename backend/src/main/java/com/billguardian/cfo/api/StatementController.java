@@ -3,8 +3,8 @@ package com.billguardian.cfo.api;
 import com.billguardian.cfo.domain.model.Transaction;
 import com.billguardian.cfo.domain.repository.TransactionRepository;
 import com.billguardian.cfo.domain.service.KafkaProducerService;
-import com.billguardian.cfo.domain.service.AnalyticsService; // <--- IMPORTANT
-import com.billguardian.cfo.dto.AnalyticsSummary; // <--- IMPORTANT
+import com.billguardian.cfo.domain.service.AnalyticsService; 
+import com.billguardian.cfo.dto.AnalyticsSummary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class StatementController {
 
     private final KafkaProducerService kafkaProducerService;
     private final TransactionRepository transactionRepository;
-    private final AnalyticsService analyticsService; // <--- Inject the service
+    private final AnalyticsService analyticsService; 
     private final ExportService exportService;
 
     @PostMapping("/upload")
@@ -41,7 +41,7 @@ public class StatementController {
         return ResponseEntity.ok(transactionRepository.findAll());
     }
 
-    // New Endpoint for Part 13
+  
     @GetMapping("/summary")
     public ResponseEntity<AnalyticsSummary> getSummary() {
         return ResponseEntity.ok(analyticsService.getSummary());

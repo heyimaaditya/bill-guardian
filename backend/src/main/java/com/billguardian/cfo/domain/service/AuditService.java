@@ -33,7 +33,6 @@ public class AuditService {
         txList.forEach(tx -> {
             tx.setCategory(detectedCategory);
             
-            // NEW: Get AI Advice for this specific transaction
             String advice = aiService.getAdvice(tx);
             tx.setAiAdvice(advice);
             tx.setCommunityAverage(benchmarkService.getFairPrice(merchant));
